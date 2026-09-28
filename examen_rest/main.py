@@ -8,9 +8,7 @@ from sqlalchemy.orm import Session
 from database import Base, SessionLocal, engine, get_db
 import models
 
-# -------------------------------------------------------------
-# Esquemas Pydantic
-# -------------------------------------------------------------
+
 class LaptopCreate(BaseModel):
     marca: str
     modelo: str
@@ -27,12 +25,8 @@ class LaptopOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-# -------------------------------------------------------------
-# Evento de ciclo de vida (Lifespan)
-# -------------------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 1. Esperar a que MySQL acepte conexiones y crear las tablas
     intentos = 30
     while intentos > 0:
         try:
@@ -44,7 +38,6 @@ async def lifespan(app: FastAPI):
                 raise
             time.sleep(2)
 
-    # 2. Poblar datos iniciales si la tabla está vacía
     db = SessionLocal()
     try:
         if db.query(models.Laptop).count() == 0:
@@ -61,36 +54,24 @@ async def lifespan(app: FastAPI):
     yield
 
 
-# -------------------------------------------------------------
-# Instancia de FastAPI
-# -------------------------------------------------------------
 app = FastAPI(lifespan=lifespan)
 
 
-# -------------------------------------------------------------
-# Endpoints
-# -------------------------------------------------------------
-
-# 1. Endpoint raíz
 @app.get("/")
 def inicio():
     return {"mensaje": "API del laboratorio de cómputo"}
 
 
-# 2. Obtener todas las laptops ordenadas por ID ascendente
 @app.get("/laptops", response_model=list[LaptopOut])
 def obtener_laptops(db: Session = Depends(get_db)):
     return db.query(models.Laptop).order_by(models.Laptop.id.asc()).all()
 
 
-# 3. Obtener únicamente laptops disponibles (filtradas en la base de datos)
-# Declarada antes de /laptops/{laptop_id} para evitar conflictos de ruta
 @app.get("/laptops/disponibles", response_model=list[LaptopOut])
 def obtener_laptops_disponibles(db: Session = Depends(get_db)):
     return db.query(models.Laptop).filter(models.Laptop.disponible == True).order_by(models.Laptop.id.asc()).all()
 
 
-# 4. Obtener una laptop por su ID
 @app.get("/laptops/{laptop_id}", response_model=LaptopOut)
 def obtener_laptop_por_id(laptop_id: int, db: Session = Depends(get_db)):
     laptop = db.query(models.Laptop).filter(models.Laptop.id == laptop_id).first()
@@ -99,7 +80,6 @@ def obtener_laptop_por_id(laptop_id: int, db: Session = Depends(get_db)):
     return laptop
 
 
-# 5. Crear una nueva laptop
 @app.post("/laptops", response_model=LaptopOut)
 def crear_laptop(laptop: LaptopCreate, db: Session = Depends(get_db)):
     nueva_laptop = models.Laptop(

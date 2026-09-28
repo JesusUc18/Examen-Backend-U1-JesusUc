@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String
 from database import Base
 
-# Modelo ORM que representa la tabla 'laptops' en la base de datos
+
 class Laptop(Base):
     __tablename__ = "laptops"
 
