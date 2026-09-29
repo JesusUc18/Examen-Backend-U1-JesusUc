@@ -1,0 +1,26 @@
+Preguntas a responder:
+
+1. Explica dos diferencias entre una API REST y un servidor GraphQL
+   - REST y GraphQL son formas de trabajar con APIs, pero funcionan diferente ya que en REST se utilizan 
+   diferentes rutas para acceder a los recursos, mientras que en GraphQL se puede hacer una consulta 
+   y pedir solamente los datos que necesitamos.
+
+2. Indica una situación en la que conviene usar REST y otra en la que conviene usar GraphQL. 
+   - REST lo usaría en una aplicación sencilla, por ejemplo para una tienda donde tengo rutas para 
+   productos, clientes y ventas, en cambio GraphQL lo usaría cuando necesito consultar información 
+   e varias partes al mismo tiempo y quiero recibir solamente los datos que voy a utilizar.
+
+3. ¿Qué diferencia hay entre una imagen y un contenedor? ¿Qué papel cumple el Dockerfile en esa relación?
+   - Una imagen de Docker contiene todo lo necesario para ejecutar una aplicación, mientras que un 
+   contenedor es esa imagen funcionando, el Dockerfile sirve para indicar paso a paso cómo se va a 
+   crear la imagen, por ejemplo, qué dependencias instalar y qué comandos ejecutar.
+
+4. ¿Para qué sirve Docker Compose? En el mapeo 8000:8000, ¿qué representa el primer 8000 y qué representa el segundo?
+   - Docker Compose sirve para configurar y ejecutar los contenedores de un proyecto de una manera más 
+   fácil. En el mapeo 8000:8000, el primer 8000 es el puerto de mi computadora y el segundo 8000 es el 
+   puerto que utiliza el contenedor.
+
+5. ¿Por qué las laptops del ejercicio 1 se guardan en MySQL y no en una lista de Python? ¿Qué identifica la llave primaria id? 
+   - Las laptops se guardan en MySQL porque así los datos quedan almacenados aunque se cierre o reinicie el programa, 
+   además de que es más fácil organizarlos y consultarlos. La llave primaria id sirve para identificar de manera única 
+   a cada laptop dentro de la base de datos.
